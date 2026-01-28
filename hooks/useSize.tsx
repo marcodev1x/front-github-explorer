@@ -16,8 +16,6 @@ export default function useSize() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    if (!window) return;
-
     return {
         isLowerMobile: windowDimension <= 440,
         isMobile: windowDimension < 768 && windowDimension > 440,

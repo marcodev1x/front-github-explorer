@@ -1,5 +1,5 @@
 import { setIconLocation } from '@/app/helpers';
-import { ButtonNewProps } from '@/components/types/ButtonTypes';
+import { ButtonNewProps } from '@/components/types/button-types';
 import useClassNames from '@/hooks/useClassnames';
 import { Button as MuiButton, CircularProgress } from '@mui/material';
 

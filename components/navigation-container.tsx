@@ -1,6 +1,6 @@
 'use client';
 
-import { JSX } from 'react';
+import { JSX, useCallback } from 'react';
 
 import Link from '@/components/link';
 import { GitHub } from '@mui/icons-material';
@@ -8,9 +8,16 @@ import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 
 import styles from './navigation-container.module.css';
+import { useRouter } from 'next/dist/client/components/navigation';
 
 
 export default function NavigationContainer(): JSX.Element {
+    const router = useRouter();
+
+    const handleClickLogo = useCallback(() => {
+        return router.push('/');
+    }, [router]);
+
     return (
         <div>
             <Box>
@@ -29,6 +36,7 @@ export default function NavigationContainer(): JSX.Element {
                                 popover={'hint'}
                                 size={'medium'}
                                 className={styles.iconButton}
+                                onClick={handleClickLogo}
                             >
                                 <GitHub
                                     color={'primary'}

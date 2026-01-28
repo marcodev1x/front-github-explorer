@@ -23,7 +23,7 @@
 }
 
 @media (--isMobile) {
-    .container {
+    .searchContainer {
         flex-direction: column;
         gap: 16px;
     }

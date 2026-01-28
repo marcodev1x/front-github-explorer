@@ -2,12 +2,15 @@
 
 import React, { JSX, useCallback, useMemo } from 'react';
 
+import { GitUser } from '@/app/domain/types/search-github.types';
+import { store } from '@/app/helpers';
 import Button from '@/components/button';
 import useApi from '@/hooks/useApi';
 import useSize from '@/hooks/useSize';
 import { TextField, Typography } from '@mui/material';
 import { QueryObserverResult, useQuery } from '@tanstack/react-query';
 import { SearchIcon } from 'lucide-react';
+import { usePathname, useRouter } from 'next/dist/client/components/navigation';
 
 import styles from './search-github.module.css';
 
@@ -15,23 +18,29 @@ import styles from './search-github.module.css';
 export default function SearchGithub(): JSX.Element {
     const [search, setSearch] = React.useState<string>('');
     const size = useSize();
+    const { setLastUser } = store((state) => state);
+    const router = useRouter();
+    const pathname = usePathname();
 
     const api = useApi({
-        url: 'https://api.github.com',
+        url: pathname,
     });
 
-    const { refetch: findProfile, isFetching, isError } = useQuery<never>({
+    const { refetch: findProfile, isFetching, isError } = useQuery<GitUser>({
         queryKey: ['findProfile', search],
         queryFn: async ({ queryKey }) => {
             const [, user] = queryKey;
 
-            const response = await api.get<never>(`/users/${user}`, {
+            const response = await api.get<GitUser>(`/api/git-users?user=${user}`, {
                 params: {
                     q: 'react',
                 },
             });
 
-            return response.data;
+            setLastUser(response?.data);
+            router.push('/user');
+
+            return response?.data;
         },
         enabled: false,
         refetchOnReconnect: false,

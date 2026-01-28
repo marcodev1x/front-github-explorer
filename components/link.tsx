@@ -1,6 +1,8 @@
 import React, { JSX } from 'react';
 
-import { Link as MuiLink, LinkProps } from '@mui/material';
+import { setIconLocation } from '@/app/helpers';
+import { LinkNewProps } from '@/components/types/link-types';
+import { Link as MuiLink } from '@mui/material';
 
 import styles from './link.module.css';
 
@@ -10,8 +12,11 @@ export default function Link({
     rel,
     underline,
     children,
+    icon,
+    iconLocation = 'left',
+    gap = '1',
     ...props
-}: LinkProps): JSX.Element {
+}: LinkNewProps): JSX.Element {
     return (
         <MuiLink
             href={href}
@@ -21,7 +26,7 @@ export default function Link({
             className={styles.link}
             {...props}
         >
-            {children}
+            {setIconLocation(iconLocation, icon, children, gap)}
         </MuiLink>
     );
 }
