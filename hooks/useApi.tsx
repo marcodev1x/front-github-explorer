@@ -9,6 +9,7 @@ function createApi(url: string) {
     });
 }
 
+// hook global tanto client quanto server
 export default function useApi({
     url,
 }: {

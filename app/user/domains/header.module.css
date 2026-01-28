@@ -42,7 +42,7 @@
     gap: 48px;
 }
 
-@media (--isMobile) {
+@media (--isTablet) {
     .content {
         display: flex;
         flex-direction: column;

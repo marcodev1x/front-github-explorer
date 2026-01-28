@@ -7,8 +7,8 @@ import { store } from '@/app/helpers';
 import Button from '@/components/button';
 import useApi from '@/hooks/useApi';
 import useSize from '@/hooks/useSize';
-import { TextField, Typography } from '@mui/material';
-import { QueryObserverResult, useQuery } from '@tanstack/react-query';
+import { Alert, Snackbar, TextField, Typography } from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
 import { SearchIcon } from 'lucide-react';
 import { usePathname, useRouter } from 'next/dist/client/components/navigation';
 
@@ -17,6 +17,8 @@ import styles from './search-github.module.css';
 
 export default function SearchGithub(): JSX.Element {
     const [search, setSearch] = React.useState<string>('');
+    const [open, setOpen] = React.useState<boolean>(false);
+
     const size = useSize();
     const { setLastUser } = store((state) => state);
     const router = useRouter();
@@ -26,26 +28,23 @@ export default function SearchGithub(): JSX.Element {
         url: pathname,
     });
 
-    const { refetch: findProfile, isFetching, isError } = useQuery<GitUser>({
-        queryKey: ['findProfile', search],
-        queryFn: async ({ queryKey }) => {
-            const [, user] = queryKey;
+    const { mutate: findProfile, isPending: isFetching, isError } = useMutation({
+        mutationFn: async (user: string) => {
+            const response = await api.get<GitUser>(`/api/git-users?user=${user}`);
 
-            const response = await api.get<GitUser>(`/api/git-users?user=${user}`, {
-                params: {
-                    q: 'react',
-                },
-            });
-
-            setLastUser(response?.data);
-            router.push('/user');
-
-            return response?.data;
+            return response.data;
         },
-        enabled: false,
-        refetchOnReconnect: false,
-        refetchOnWindowFocus: false,
+        onSuccess: (data) => {
+            setLastUser(data);
+
+            router.push('/user');
+        },
+        onError: () => {
+            setOpen(true);
+        },
     });
+
+
 
     const commonOptions = useMemo(() => {
         return [
@@ -60,8 +59,8 @@ export default function SearchGithub(): JSX.Element {
         return setSearch(e?.target?.value);
     }, []);
 
-    const handleSearchUser = useCallback((): Promise<QueryObserverResult> => {
-        return findProfile();
+    const handleSearchUser = useCallback((user: string) => {
+        return () => findProfile(user);
     }, [findProfile]);
 
     const handleCommonUsers = useCallback((value: string) => {
@@ -70,10 +69,29 @@ export default function SearchGithub(): JSX.Element {
         return () => setSearch(removeAt);
     }, []);
 
+    const handleSnackbar = useCallback((value: boolean) => {
+        return () => setOpen(value);
+    }, []);
+
     const isMobile = size ? (size.isMobile || size.isLowerMobile) : false;
 
     return (
         <div className={styles.container}>
+            <Snackbar
+                open={isError && open}
+                autoHideDuration={6000}
+                onClose={handleSnackbar(false)}
+                message="Usuário não encontrado. Tente novamente ou tente outro usuário."
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert
+                    severity="error"
+                    onClose={handleSnackbar(false)}
+                    variant="filled"
+                >
+                    Usuário não encontrado. Tente novamente.
+                </Alert>
+            </Snackbar>
             <div className={styles.searchContainer}>
                 <TextField
                     variant={'filled'}
@@ -90,7 +108,7 @@ export default function SearchGithub(): JSX.Element {
                     gap={'2'}
                     variant={'contained'}
                     padronizedSize={'large'}
-                    onClick={handleSearchUser}
+                    onClick={handleSearchUser(search)}
                     loading={isFetching}
                     disabled={search === ''}
                     className={styles.button}
