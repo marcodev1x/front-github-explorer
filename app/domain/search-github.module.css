@@ -1,0 +1,39 @@
+@import '../medias.css';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 64px;
+    gap: 16px;
+}
+
+.searchContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    justify-content: center;
+}
+
+.input {
+    max-width: 470px;
+}
+
+@media (--isMobile) {
+    .container {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .input {
+        max-width: 100%;
+    }
+
+    .button {
+        width: 100% !important;
+        max-width: 470px;
+    }
+}

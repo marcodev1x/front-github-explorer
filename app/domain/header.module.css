@@ -1,0 +1,78 @@
+@import '../medias.css';
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.headerCard {
+    padding: 16px;
+
+    animation: float 3s ease-in-out infinite;
+    will-change: transform;
+}
+
+.headerContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.headerContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+@media (--isTablet) {
+    .description {
+        font-size: 20px !important;
+        text-align: center;
+    }
+}
+
+@media (--isMobile) {
+    .headerContainer {
+        gap: 8px;
+    }
+
+    .headerContent {
+        gap: 16px;
+        flex-direction: column;
+    }
+
+    .headerCard {
+        padding: 8px;
+    }
+
+    .header {
+        gap: 8px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .description {
+        font-size: 18px !important;
+    }
+}
