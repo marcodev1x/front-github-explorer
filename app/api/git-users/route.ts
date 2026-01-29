@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server';
-import useApi from '@/hooks/useApi';
+import apiInstance from '@/hooks/useApi';
 
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const user = searchParams.get('user');
-    const page = searchParams.get('page');
-    const perPage = searchParams.get('per_page');
 
     if (!user) {
         return NextResponse.json(
@@ -14,7 +12,7 @@ export async function GET(req: Request) {
         );
     }
 
-    const api = useApi({ url: 'https://api.github.com' });
+    const api = apiInstance({ url: 'https://api.github.com', token: true });
 
     try {
         const res = await api.get(`/users/${user}`);

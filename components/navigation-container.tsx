@@ -8,8 +8,7 @@ import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 
 import styles from './navigation-container.module.css';
-import { useRouter } from 'next/dist/client/components/navigation';
-
+import { useRouter } from 'next/navigation';
 
 export default function NavigationContainer(): JSX.Element {
     const router = useRouter();

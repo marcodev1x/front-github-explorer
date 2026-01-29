@@ -1,19 +1,20 @@
 import axios from 'axios';
 
-function createApi(url: string) {
+function createApi(url: string, token?: boolean) {
     return axios.create({
         baseURL: url,
         headers: {
-            Authorization: `Bearer ${process.env.GITHUB_API_TOKEN}`,
+            Authorization: token ? `Bearer ${process.env.GITHUB_API_TOKEN}` : '',
         },
     });
 }
 
-// hook global tanto client quanto server
-export default function useApi({
+export default function setupApi({
     url,
+    token,
 }: {
     url: string;
+    token?: boolean;
 }) {
-    return createApi(url);
+    return createApi(url, token);
 }

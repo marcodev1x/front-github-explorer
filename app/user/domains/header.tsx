@@ -6,7 +6,7 @@ import Link from '@/components/link';
 import { Typography } from '@/components/typography';
 import { ArrowLeft, Link as LinkIcon, LocationOn, Work } from '@mui/icons-material';
 import { useTheme } from '@mui/material';
-import { Image } from 'next/dist/client/image-component';
+import Image from 'next/image';
 
 import styles from './header.module.css';
 import Card from '@/components/card';

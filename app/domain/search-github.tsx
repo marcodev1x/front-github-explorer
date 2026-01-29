@@ -10,9 +10,9 @@ import useSize from '@/hooks/useSize';
 import { Alert, Snackbar, TextField, Typography } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { SearchIcon } from 'lucide-react';
-import { usePathname, useRouter } from 'next/dist/client/components/navigation';
 
 import styles from './search-github.module.css';
+import { useRouter, usePathname } from 'next/navigation';
 
 
 export default function SearchGithub(): JSX.Element {
@@ -43,8 +43,6 @@ export default function SearchGithub(): JSX.Element {
             setOpen(true);
         },
     });
-
-
 
     const commonOptions = useMemo(() => {
         return [

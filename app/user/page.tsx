@@ -8,7 +8,7 @@ import Repositories from '@/app/user/domains/repositories';
 import Layout from '@/components/layout';
 import useApi from '@/hooks/useApi';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { usePathname, useRouter } from 'next/dist/client/components/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 import { Repository } from './domains/types/repositories-types';
 
